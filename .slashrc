@@ -324,37 +324,39 @@ class MediaPlugin(slash.plugins.PluginInterface):
       errors = str(errors), failures = str(failures), skipped = str(skipped),
       time = str(time), timestamp = self.session_start.isoformat(), **info())
 
-    for result in slash.context.session.results.iter_test_results():
-      suitename, casename = result.test_metadata.address.split(':')
-      classname = os.path.splitext(suitename)[0].replace(os.sep, '.').strip('.')
-      classname = "{}.{}".format(self.suite, classname)
+    with open(os.path.join(
+      slash.context.session.results.global_result.get_log_dir(),'errors.txt'), 'w') as errors_out:
+      for result in slash.context.session.results.iter_test_results():
+        suitename, casename = result.test_metadata.address.split(':')
+        classname = os.path.splitext(suitename)[0].replace(os.sep, '.').strip('.')
+        classname = "{}.{}".format(self.suite, classname)
+        case = et.SubElement(
+          suite, "testcase", name = casename, classname = classname,
+          time = result.data.get("time") or "0")
+        outfile = result.get_log_path()
+        if os.path.exists(outfile):
+          with open(outfile, 'rb', 0) as out:
+            value = "".join(line.decode("utf-8") for line in out) 
+            et.SubElement(case, "system-out").text = ansi_escape(value)
 
-      case = et.SubElement(
-        suite, "testcase", name = casename, classname = classname,
-        time = result.data.get("time") or "0")
+        for error in itertools.chain(result.get_errors(), result.get_failures()):
+          exc_type, exc_value, _ = exc_info = sys.exc_info()
+          tag = "failure" if error.is_failure() else "error"
+          et.SubElement(
+            case, tag, message = error.message,
+            type = exc_type.__name__ if exc_type else tag).text = ansi_escape(
+              get_traceback_string(exc_info) if exc_value is not None else "")
+          errors_out.write("Test Suite: " +  suitename+'\n')
+          errors_out.write("Test Case: " + casename+'\n')
+          errors_out.write("Test Error: " + str(error)+'\n')
+          errors_out.write('\n') 
+        for skip in result.get_skips():
+          case.set("skipped", "1")
+          et.SubElement(case, "skipped", type = skip or '')
 
-      outfile = result.get_log_path()
-      if os.path.exists(outfile):
-        with open(outfile, 'rb', 0) as out:
-          value = "".join(line.decode("utf-8") for line in out) 
-          et.SubElement(case, "system-out").text = ansi_escape(value)
-
-      for error in itertools.chain(result.get_errors(), result.get_failures()):
-        exc_type, exc_value, _ = exc_info = sys.exc_info()
-        tag = "failure" if error.is_failure() else "error"
-        et.SubElement(
-          case, tag, message = error.message,
-          type = exc_type.__name__ if exc_type else tag).text = ansi_escape(
-            get_traceback_string(exc_info) if exc_value is not None else "")
-
-      for skip in result.get_skips():
-        case.set("skipped", "1")
-        et.SubElement(case, "skipped", type = skip or '')
-
-      for name, value in result.details.all().items():
-        et.SubElement(case, "detail", name = name, value = str(value))
-
-    tree = et.ElementTree(suite)
+        for name, value in result.details.all().items():
+          et.SubElement(case, "detail", name = name, value = str(value))
+      tree = et.ElementTree(suite)
 
     validate_unique_cases(tree)
 
