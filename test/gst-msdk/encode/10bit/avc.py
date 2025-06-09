@@ -4,14 +4,14 @@
 ### SPDX-License-Identifier: BSD-3-Clause
 ###
 
-from ....lib import *
-from ....lib.gstreamer.msdk.util import *
-from ....lib.gstreamer.msdk.encoder import AVCEncoderTest, AVCEncoderLPTest
+from .....lib import *
+from .....lib.gstreamer.msdk.util import *
+from .....lib.gstreamer.msdk.encoder import AVC_10EncoderTest, AVC_10EncoderLPTest
 
-spec      = load_test_spec("avc", "encode","8bit")
-spec_r2r  = load_test_spec("avc", "encode","8bit", "r2r")
+spec      = load_test_spec("avc_10", "encode","10bit")
+spec_r2r  = load_test_spec("avc_10", "encode","10bit", "r2r")
 
-class cqp(AVCEncoderTest):
+class cqp(AVC_10EncoderTest):
   def init(self, tspec, case, gop, slices, bframes, qp, quality, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -36,7 +36,7 @@ class cqp(AVCEncoderTest):
     vars(self).setdefault("r2r", 5)
     self.encode()
 
-class cqp_lp(AVCEncoderLPTest):
+class cqp_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, gop, slices, bframes, qp, quality, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -61,7 +61,7 @@ class cqp_lp(AVCEncoderLPTest):
     vars(self).setdefault("r2r", 5)
     self.encode()
 
-class cbr(AVCEncoderTest):
+class cbr(AVC_10EncoderTest):
   def init(self, tspec, case, gop, slices, bframes, bitrate, fps, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -88,7 +88,7 @@ class cbr(AVCEncoderTest):
     vars(self).setdefault("r2r", 5)
     self.encode()
 
-class cbr_lp(AVCEncoderLPTest):
+class cbr_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, gop, slices, bframes, bitrate, fps, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -115,7 +115,7 @@ class cbr_lp(AVCEncoderLPTest):
     vars(self).setdefault("r2r", 5)
     self.encode()
 
-class vbr(AVCEncoderTest):
+class vbr(AVC_10EncoderTest):
   def init(self, tspec, case, gop, slices, bframes, bitrate, fps, quality, refs, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -145,7 +145,7 @@ class vbr(AVCEncoderTest):
     vars(self).setdefault("r2r", 5)
     self.encode()
 
-class vbr_lp(AVCEncoderLPTest):
+class vbr_lp(AVC_10EncoderLPTest):
   def before(self):
     super().before()
     vars(self).update(
@@ -199,7 +199,7 @@ class vbr_lp(AVCEncoderLPTest):
     )
     self.encode()
 
-class vbr_la(AVCEncoderTest):
+class vbr_la(AVC_10EncoderTest):
   def init(self, tspec, case, bframes, bitrate, fps, quality, refs, profile, ladepth):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -228,7 +228,7 @@ class vbr_la(AVCEncoderTest):
     vars(self).setdefault("r2r", 5)
     self.encode()
 
-class max_frame_size(AVCEncoderTest):
+class max_frame_size(AVC_10EncoderTest):
   def init(self, tspec, case, bitrate, maxrate, fps, maxframesize, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -247,7 +247,7 @@ class max_frame_size(AVCEncoderTest):
     self.init(spec, case, bitrate, maxrate, fps, maxframesize, profile)
     self.encode()
 
-class intref(AVCEncoderTest):
+class intref(AVC_10EncoderTest):
   def init(self, tspec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -268,7 +268,7 @@ class intref(AVCEncoderTest):
     self.init(spec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist)
     self.encode()
 
-class intref_lp(AVCEncoderLPTest):
+class intref_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -289,7 +289,7 @@ class intref_lp(AVCEncoderLPTest):
     self.init(spec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist)
     self.encode()
 
-class rqp(AVCEncoderTest):
+class rqp(AVC_10EncoderTest):
   def init(self, tspec, case, gop, bframes, bitrate, maxrate, profile, rcmode, maxi, mini, maxp, minp, maxb, minb):
     vars(self).update(tspec[case].copy())
     vars(self).update(

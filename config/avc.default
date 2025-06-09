@@ -27,7 +27,7 @@ media._get_test_spec("avc", "decode").update({
   ),
 })
 
-media._get_test_spec("avc", "encode").update({
+media._get_test_spec("avc", "encode","8bit").update({
   "QCIF" : dict(
     source = os.path.join(assets, "yuv", "QCIF_NV12.yuv"),
     width = 176, height = 144, format = "NV12", frames = 300,
@@ -108,7 +108,7 @@ media._get_test_spec("avc", "encode").update({
 })
 
 if media._get_driver_name() == "iHD": # iHD driver supports LP with multi-slice
-  for v in media._get_test_spec("avc", "encode").values():
+  for v in media._get_test_spec("avc", "encode","8bit").values():
     v["variants"]["cqp_lp"].append(dict(gop = 30, slices = 4, qp = 14, quality = 4, bframes = 0))
 
 media._get_test_spec("avc", "transcode").update({

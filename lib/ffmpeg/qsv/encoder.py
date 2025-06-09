@@ -241,6 +241,8 @@ def codec_test_class(codec, engine, bitdepth, **kwargs):
 ##### AVC #####
 AVCEncoderTest      = codec_test_class(Codec.AVC, "encode", 8)
 AVCEncoderLPTest    = codec_test_class(Codec.AVC,  "vdenc", 8)
+AVC_10EncoderTest      = codec_test_class(Codec.AVC, "encode", 10)
+AVC_10EncoderLPTest    = codec_test_class(Codec.AVC,  "vdenc", 10)
 
 ##### HEVC #####
 HEVC8EncoderTest    = codec_test_class(Codec.HEVC, "encode",  8)

@@ -4,15 +4,15 @@
 ### SPDX-License-Identifier: BSD-3-Clause
 ###
 
-from ....lib import *
-from ....lib.ffmpeg.qsv.util import *
-from ....lib.ffmpeg.qsv.encoder import AVCEncoderTest, AVCEncoderLPTest
-from ....lib.ffmpeg.qsv.encoder import StringAPIEncoder
+from .....lib import *
+from .....lib.ffmpeg.qsv.util import *
+from .....lib.ffmpeg.qsv.encoder import AVC_10EncoderTest, AVC_10EncoderLPTest
+from .....lib.ffmpeg.qsv.encoder import StringAPIEncoder
 
-spec      = load_test_spec("avc", "encode","8bit")
-spec_r2r  = load_test_spec("avc", "encode","8bit", "r2r")
+spec      = load_test_spec("avc_10", "encode","10bit")
+spec_r2r  = load_test_spec("avc_10", "encode","10bit", "r2r")
 
-class cqp(AVCEncoderTest):
+class cqp(AVC_10EncoderTest):
   def init(self, tspec, case, gop, slices, bframes, qp, quality, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -44,7 +44,7 @@ class cqp(AVCEncoderTest):
      self.init(spec, case, gop, slices, bframes, qp, quality, profile)
      self.encode()
 
-class cqp_lp(AVCEncoderLPTest):
+class cqp_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, gop, slices, bframes, qp, quality, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -76,7 +76,7 @@ class cqp_lp(AVCEncoderLPTest):
      self.init(spec, case, gop, slices, bframes, qp, quality, profile)
      self.encode()
 
-class cbr(AVCEncoderTest):
+class cbr(AVC_10EncoderTest):
   def init(self, tspec, case, gop, slices, bframes, bitrate, fps, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -110,7 +110,7 @@ class cbr(AVCEncoderTest):
     self.init(spec, case, gop, slices, bframes, bitrate, fps, profile)
     self.encode()
 
-class cbr_lp(AVCEncoderLPTest):
+class cbr_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, gop, slices, bframes, bitrate, fps, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -144,7 +144,7 @@ class cbr_lp(AVCEncoderLPTest):
     self.init(spec, case, gop, slices, bframes, bitrate, fps, profile)
     self.encode()
 
-class vbr(AVCEncoderTest):
+class vbr(AVC_10EncoderTest):
   def init(self, tspec, case, gop, slices, bframes, bitrate, fps, quality, refs, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -180,7 +180,7 @@ class vbr(AVCEncoderTest):
     self.init(spec, case, gop, slices, bframes, bitrate, fps, quality, refs, profile)
     self.encode()
 
-class vbr_lp(AVCEncoderLPTest):
+class vbr_lp(AVC_10EncoderLPTest):
   def before(self):
     super().before()
     vars(self).update(rcmode = "vbr")
@@ -235,7 +235,7 @@ class vbr_lp(AVCEncoderLPTest):
     self.encode()
 
 # TODO: This can be moved into the vbr test class in a test_la method
-class vbr_la(AVCEncoderTest):
+class vbr_la(AVC_10EncoderTest):
   @slash.parametrize(*gen_avc_vbr_la_parameters(spec, ['high', 'main', 'baseline']))
   def test(self, case, bframes, bitrate, fps, quality, refs, profile, ladepth):
     vars(self).update(spec[case].copy())
@@ -254,7 +254,7 @@ class vbr_la(AVCEncoderTest):
     )
     self.encode()
 
-class forced_idr(AVCEncoderTest):
+class forced_idr(AVC_10EncoderTest):
   def init(self, tspec, case, rcmode, bitrate, maxrate, qp, quality, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -274,7 +274,7 @@ class forced_idr(AVCEncoderTest):
     self.init(spec, case, rcmode, bitrate, maxrate, qp, quality, profile)
     self.encode()
 
-class intref(AVCEncoderTest):
+class intref(AVC_10EncoderTest):
   def init(self, tspec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -295,7 +295,7 @@ class intref(AVCEncoderTest):
     self.init(spec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist)
     self.encode()
 
-class intref_lp(AVCEncoderLPTest):
+class intref_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -316,7 +316,7 @@ class intref_lp(AVCEncoderLPTest):
     self.init(spec, case, gop, bframes, bitrate, qp, maxrate, profile, rcmode, reftype, refsize, refdist)
     self.encode()
 
-class max_frame_size(AVCEncoderTest):
+class max_frame_size(AVC_10EncoderTest):
   def init(self, tspec, case, bitrate, maxrate, fps, maxframesize, profile):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -335,7 +335,7 @@ class max_frame_size(AVCEncoderTest):
     self.init(spec, case, bitrate, maxrate, fps, maxframesize, profile)
     self.encode()
 
-class roi(AVCEncoderTest):
+class roi(AVC_10EncoderTest):
   def init(self, tspec, case, gop, bframes, bitrate, maxrate, profile, rcmode):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -355,7 +355,7 @@ class roi(AVCEncoderTest):
     self.init(spec, case, gop, bframes, bitrate, maxrate, profile, rcmode)
     self.encode()
 
-class roi_lp(AVCEncoderLPTest):
+class roi_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, gop, bframes, bitrate, maxrate, profile, rcmode):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -375,7 +375,7 @@ class roi_lp(AVCEncoderLPTest):
     self.init(spec, case, gop, bframes, bitrate, maxrate, profile, rcmode)
     self.encode()
 
-class rqp(AVCEncoderTest):
+class rqp(AVC_10EncoderTest):
   def init(self, tspec, case, gop, bframes, bitrate, maxrate, profile, rcmode, maxi, mini, maxp, minp, maxb, minb):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -395,7 +395,7 @@ class rqp(AVCEncoderTest):
     self.init(spec, case, gop, bframes, bitrate, maxrate, profile, rcmode, maxi, mini, maxp, minp, maxb, minb)
     self.encode()
 
-class seek(AVCEncoderTest):
+class seek(AVC_10EncoderTest):
   def init(self, tspec, case, rcmode, bitrate, maxrate, fps, seek):
     vars(self).update(tspec[case].copy())
     vars(self).update(
@@ -413,7 +413,7 @@ class seek(AVCEncoderTest):
     self.init(spec, case, rcmode, bitrate, maxrate, fps, seek)
     self.encode()
 
-class seek_lp(AVCEncoderLPTest):
+class seek_lp(AVC_10EncoderLPTest):
   def init(self, tspec, case, rcmode, bitrate, maxrate, fps, seek):
     vars(self).update(tspec[case].copy())
     vars(self).update(

@@ -8,8 +8,8 @@ from ....lib import *
 from ....lib.gstreamer.va.util import *
 from ....lib.gstreamer.va.encoder import AVCEncoderTest, AVCEncoderLPTest
 
-spec      = load_test_spec("avc", "encode")
-spec_r2r  = load_test_spec("avc", "encode", "r2r")
+spec      = load_test_spec("avc", "encode","8bit")
+spec_r2r  = load_test_spec("avc", "encode","8bit", "r2r")
 
 class cqp(AVCEncoderTest):
   def init(self, tspec, case, gop, slices, bframes, qp, quality, profile):

@@ -186,6 +186,8 @@ AVCCommonArgs = dict(
 )
 AVCEncoderTest    = codec_test_class(bitdepth = 8, engine = "encode", **AVCCommonArgs)
 AVCEncoderLPTest  = codec_test_class(bitdepth = 8, engine =  "vdenc", **AVCCommonArgs)
+AVC_10EncoderTest    = codec_test_class(bitdepth = 10, engine = "encode", **AVCCommonArgs)
+AVC_10EncoderLPTest  = codec_test_class(bitdepth = 10, engine =  "vdenc", **AVCCommonArgs)
 
 ##### HEVC #####
 HEVCCommonArgs = dict(
